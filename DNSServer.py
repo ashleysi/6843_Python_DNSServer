@@ -100,6 +100,36 @@ dns_records = {
     },
    
     # Add more records as needed (see assignment instructions!
+    # safebank.com  -> 192.168.1.102
+    'safebank.com.': {
+        dns.rdatatype.A: '192.168.1.102',
+    },
+
+    # google.com    -> 192.168.1.103
+    'google.com.': {
+        dns.rdatatype.A: '192.168.1.103',
+    },
+
+    # legitsite.com -> 192.168.1.104
+    'legitsite.com.': {
+        dns.rdatatype.A: '192.168.1.104',
+    },
+
+    # yahoo.com     -> 192.168.1.105
+    'yahoo.com.': {
+        dns.rdatatype.A: '192.168.1.105',
+    },
+
+    # nyu.edu       -> 192.168.1.106
+    'nyu.edu.': {
+        dns.rdatatype.A: '192.168.1.106',
+    },
+    # TXT  -> a string cast version of your encrypted secret data from step 3
+    # MX   -> 10, mxa-00256a01.gslb.pphosted.com.
+    # AAAA -> 2001:0db8:85a3:0000:0000:8a2e:0373:7312
+    # NS   -> ns1.nyu.edu.
+
+
 }
 
 def run_dns_server():
@@ -143,10 +173,10 @@ def run_dns_server():
                 #elif qtype == dns.rdatatype.??:
                 elif qtype == dns.rdatatype.SOA:
                     #??, ??, ??, ??, ??, ??, ?? = answer_data # What is the record format? See dns_records dictionary. Assume we handle @, Class, TTL elsewhere. Do some research on SOA Records
-                    expire, minimum, mname, refresh, retry, rname, serial = answer_data
+                    mname, rname, serial, refresh, retry, expire, minimum = answer_data
                     
                     #rdata = SOA(dns.rdataclass.IN, dns.rdatatype.SOA, ??, ??, ??, ??, ??, ??, ??) # follow format from previous line
-                    rdata = SOA(dns.rdataclass.IN, dns.rdatatype.SOA, expire, minimum, mname, refresh, retry, rname, serial)
+                    rdata = SOA(dns.rdataclass.IN, dns.rdatatype.SOA, mname, rname, serial, refresh, retry, expire, minimum)
                     rdata_list.append(rdata)
                 else:
                     if isinstance(answer_data, str):
@@ -165,7 +195,7 @@ def run_dns_server():
             
             #server_socket.??????? 
             server_socket.sendto(response.to_wire(), addr)
-            
+
         except KeyboardInterrupt:
             print('\nExiting...')
             server_socket.close()
