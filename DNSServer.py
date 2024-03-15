@@ -123,13 +123,17 @@ dns_records = {
     # nyu.edu       -> 192.168.1.106
     'nyu.edu.': {
         dns.rdatatype.A: '192.168.1.106',
+        # TXT  -> a string cast version of your encrypted secret data from step 3
+        dns.rdatatype.TXT: str(encrypted_value),
+        # MX   -> 10, mxa-00256a01.gslb.pphosted.com.
+        dns.rdatatype.MX: [(10, 'mxa-00256a01.gslb.pphosted.com.')],
+         # AAAA -> 2001:0db8:85a3:0000:0000:8a2e:0373:7312
+        dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0373:7312',
+        # NS   -> ns1.nyu.edu.
+        dns.rdatatype.NS: 'ns1.nyu.edu.',
+
     },
-    # TXT  -> a string cast version of your encrypted secret data from step 3
-    # MX   -> 10, mxa-00256a01.gslb.pphosted.com.
-    # AAAA -> 2001:0db8:85a3:0000:0000:8a2e:0373:7312
-    # NS   -> ns1.nyu.edu.
-
-
+    
 }
 
 def run_dns_server():
